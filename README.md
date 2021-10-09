@@ -9,6 +9,7 @@ npm install
 ```
 npm run serve
 ```
+Runs under port 3000
 
 ### Compiles and minifies for production
 ```
