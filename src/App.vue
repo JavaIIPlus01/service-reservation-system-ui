@@ -17,8 +17,33 @@
       </ul>
     </nav>
   </div>
+  <div v-if="homePage()" class="optional">
+    <div id="search">
+      <input type="text" placeholder="Search.." />
+      <img alt="search icon" src="./assets/search.png" />
+    </div>
+    <div v-if="homePage()" id="sign_but">
+      <button id="sign_in">
+        <router-link to="/login">Sign In</router-link>
+      </button>
+      <button id="sign_up">
+        <router-link to="/register">Sign Up</router-link>
+      </button>
+    </div>
+  </div>
   <router-view />
+
 </template>
+
+<script>
+export default {
+  methods: {
+    homePage() {
+      return this.$route.path === "/" || this.$route.path === "/home";
+    },
+  },
+};
+</script>
 
 <style>
 @font-face {
@@ -31,15 +56,22 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  width: 100%;
+  position: relative;
+}
+
+#nav {
+  display: inline-block;
+  padding-left: 30px;
+  height: 97px;
+  width: 430px;
 }
 
 nav ul {
   padding-inline: 30px;
   list-style: none;
-  margin: 30px;
   text-align: left; /* step 6 */
-  border: solid 5px #2c3e50;
-  display: inline-block;
+  border: solid 3px #2c3e50;
 }
 
 nav li {
@@ -56,5 +88,43 @@ nav a {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.optional {
+  display: inline-block;
+  height: 45px;
+  width: 700px;
+  position: relative;
+}
+
+#search {
+  margin-left: 30px;
+  margin-right: 30px;
+  display: inline-block;
+  position: relative;
+}
+input {
+  height: 30px;
+  width: 200px;
+  border: solid 3px #2c3e50;
+  margin-right: 10px;
+  font-family: roboto-regular, Helvetica, Arial, sans-serif;
+}
+img {
+  position: absolute;
+  bottom: 0;
+}
+
+#sign_but {
+  margin-left: 80px;
+  display: inline-block;
+  margin-right: 0;
+}
+button {
+  border: solid 3px #2c3e50;
+  box-shadow: 5px 5px #888888;
+  font-family: roboto-regular, Helvetica, Arial, sans-serif;
+  height: 40px;
+  width: 100px;
 }
 </style>
