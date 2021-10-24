@@ -37,8 +37,8 @@ export default {
 <style>
 .home {
   margin: 100px auto;
-  width: 50%;
   border: 3px solid #2c3e50;
+  min-width: 40%;
   padding: 10px;
   position: relative;
 }
