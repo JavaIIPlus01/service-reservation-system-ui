@@ -34,6 +34,7 @@ h1 {
   margin: auto;
   text-align: center;
   font-weight: bold;
+  font-size: x-large;
 }
 
 p {
@@ -51,5 +52,6 @@ a {
 
 button {
   margin: 30px;
+  width: 120px;
 }
 </style>

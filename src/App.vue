@@ -22,7 +22,7 @@
       <input type="text" placeholder="Search.." />
       <img alt="search icon" src="./assets/search.png" />
     </div>
-    <div v-if="homePage()" id="sign_but">
+    <div v-if="homePage() && !account.user" class="sign_but">
       <button id="sign_in">
         <router-link to="/login">Sign In</router-link>
       </button>
@@ -30,16 +30,39 @@
         <router-link to="/register">Sign Up</router-link>
       </button>
     </div>
+    <div v-if="homePage() && account.status.loggedIn" class="sign_but">
+      <button id="log_out">
+        <router-link to="/login">Log Out</router-link>
+      </button>
+    </div>
   </div>
-  <router-view />
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+          <div v-if="false" :class="`alert ${alert.type}`">ALERT!</div>
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
 
 <script>
+
+import { mapState} from "vuex";
+
 export default {
+  computed: {
+    ...mapState({
+      account: (state) => state.account,
+      users: (state) => state.users.all,
+    })
+  },
   methods: {
     homePage() {
-      return this.$route.path === "/" || this.$route.path === "/home";
+      return (this.$route.path === "/" || this.$route.path === "/home");
     },
   },
 };
@@ -64,7 +87,7 @@ export default {
   display: inline-block;
   padding-left: 30px;
   height: 97px;
-  width: 430px;
+  width: 470px;
 }
 
 nav ul {
@@ -115,7 +138,7 @@ img {
   bottom: 0;
 }
 
-#sign_but {
+.sign_but {
   margin-left: 80px;
   display: inline-block;
   margin-right: 0;
