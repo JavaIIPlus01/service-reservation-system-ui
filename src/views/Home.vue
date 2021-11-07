@@ -3,16 +3,16 @@
     <div id="container">
       <ul>
         <li>
-          <img src="../assets/graph.png" alt="graph"/>
+          <font-awesome-icon icon="car" class="fas fa-car fa-3x" />
         </li>
         <li>
-          <img src="../assets/sign-at.png" alt="graph"/>
+          <font-awesome-icon icon="briefcase" class="fas fa-briefcase fa-3x" />
         </li>
         <li>
-          <img src="../assets/owl.jpg" alt="graph"/>
+          <font-awesome-icon icon="bullhorn" class="fas fa-bullhorn fa-3x" />
         </li>
         <li>
-          <img src="../assets/world.jpg" alt="graph"/>
+          <font-awesome-icon icon="cogs" class="fas fa-cogs fa-3x" />
         </li>
       </ul>
     </div>
@@ -39,32 +39,30 @@ export default {
   margin: 100px auto;
   border: 3px solid #2c3e50;
   min-width: 40%;
-  padding: 10px;
-  position: relative;
 }
 
 #container {
-  position: absolute;
-  top: 0;
-  left: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
 }
 
-#container ul {
+ul {
   list-style: none;
-  text-align: left; /* step 6 */
-  display: inline-flex;
+  margin: 0;
+  padding: 0;
 }
 
-#container li {
+li {
   margin: 20px;
   height: 50px;
-  width: 50px;
+  width: 60px;
   display: inline-block; /* step 1 */
-
 }
 #text-container {
   display: block;
-  margin-top: 150px;
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
 }

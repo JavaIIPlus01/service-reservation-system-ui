@@ -1,40 +1,53 @@
 <template>
-  <div id="nav">
-    <nav>
-      <ul>
-        <li>
-          <router-link to="/">Home</router-link>
+  <div id="bar">
+    <nav
+      id="nav"
+      class="navbar navbar-expand navbar-light"
+      style="background-color: #add8e6">
+      <div id="mandatory" class="navbar-nav mr-auto">
+        <li class="link nav-item">
+          <router-link to="/" class="nav-link">Home</router-link>
         </li>
-        <li>
-          <router-link to="/services">Services</router-link>
+        <li class="link nav-item">
+          <router-link to="/services" class="nav-link">Services</router-link>
         </li>
-        <li>
-          <router-link to="/contact">Contact</router-link>
+        <li class="link nav-item">
+          <router-link to="/contact" class="nav-link">Contact</router-link>
         </li>
-        <li>
-          <router-link to="/help">Help</router-link>
+        <li class="link nav-item">
+          <router-link to="/help" class="nav-link">Help</router-link>
         </li>
-      </ul>
+      </div>
+      <div id="optional">
+        <div v-if="homePage()" id="search">
+          <form class="form-inline">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <a class="search-icon nav-link" @click.prevent="">
+              <font-awesome-icon icon="search" class="fas fa-search fa-2x"
+            /></a>
+          </form>
+        </div>
+        <div v-if="homePage() && !account.user" class="sign_but">
+          <button type="button" class="but btn btn-secondary">
+            <router-link to="/login" class="text">Sign In</router-link>
+          </button>
+          <button type="button" class="but btn btn-secondary">
+            <router-link to="/register" class="text">Sign Up</router-link>
+          </button>
+        </div>
+        <div v-if="homePage() && account.status.loggedIn" class="sign_but">
+          <button type="button" class="but btn btn-secondary">
+            <a class="text nav-link" @click.prevent="logOut">
+              <font-awesome-icon icon="sign-out-alt" class="text"/> LogOut</a>
+          </button>
+        </div>
+      </div>
     </nav>
-  </div>
-  <div v-if="homePage()" class="optional">
-    <div id="search">
-      <input type="text" placeholder="Search.." />
-      <img alt="search icon" src="./assets/search.png" />
-    </div>
-    <div v-if="homePage() && !account.user" class="sign_but">
-      <button id="sign_in">
-        <router-link to="/login">Sign In</router-link>
-      </button>
-      <button id="sign_up">
-        <router-link to="/register">Sign Up</router-link>
-      </button>
-    </div>
-    <div v-if="homePage() && account.status.loggedIn" class="sign_but">
-      <button id="log_out">
-        <router-link to="/login">Log Out</router-link>
-      </button>
-    </div>
   </div>
   <div class="jumbotron">
     <div class="container">
@@ -46,23 +59,26 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-
-import { mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   computed: {
     ...mapState({
       account: (state) => state.account,
       users: (state) => state.users.all,
-    })
+    }),
   },
   methods: {
+    ...mapActions("account", ["logout"]),
     homePage() {
-      return (this.$route.path === "/" || this.$route.path === "/home");
+      return this.$route.path === "/" || this.$route.path === "/home";
+    },
+    logOut() {
+      this.logout();
+      this.$router.push("/login");
     },
   },
 };
@@ -74,80 +90,62 @@ export default {
   src: url("assets/VarelaRound-Regular.ttf");
 }
 
-#app {
-  font-family: roboto-regular, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  width: 100%;
-  position: relative;
-}
-
-#nav {
-  display: inline-block;
-  padding-left: 30px;
-  height: 97px;
-  width: 470px;
-}
-
-nav ul {
-  padding-inline: 30px;
-  list-style: none;
-  text-align: left; /* step 6 */
-  border: solid 3px #2c3e50;
-}
-
-nav li {
-  padding: 20px;
-  display: inline-block; /* step 1 */
-}
-
-nav a {
-  display: block; /* step 2 */
-  text-decoration: none; /* step 3 */
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-.optional {
-  display: inline-block;
-  height: 45px;
-  width: 700px;
-  position: relative;
-}
-
-#search {
-  margin-left: 30px;
-  margin-right: 30px;
-  display: inline-block;
-  position: relative;
-}
-input {
-  height: 30px;
-  width: 200px;
-  border: solid 3px #2c3e50;
+button {
   margin-right: 10px;
-  font-family: roboto-regular, Helvetica, Arial, sans-serif;
+  font-family: roboto-regular, sans-serif;
+  box-shadow: 5px 5px #c0c0c0;
 }
-img {
-  position: absolute;
-  bottom: 0;
+
+.but:hover {
+  background-color: #566573;
+  border-color: transparent;
+}
+
+a.nav-link {
+  color: #2c3e50;
+  font-weight: bold;
+  font-family: roboto-regular, sans-serif;
 }
 
 .sign_but {
-  margin-left: 80px;
   display: inline-block;
-  margin-right: 0;
+  margin-right: 10px;
 }
-button {
-  border: solid 3px #2c3e50;
-  box-shadow: 5px 5px #888888;
-  font-family: roboto-regular, Helvetica, Arial, sans-serif;
-  height: 40px;
-  width: 100px;
+
+.text {
+  color: wheat;
+}
+
+.text:hover {
+  color: burlywood;
+  text-decoration: none;
+}
+
+.search-icon {
+  padding: 0 5px;
+}
+
+#search {
+  display: inline-block;
+  margin-right: 2em;
+}
+
+#nav a.router-link-exact-active {
+  color: #008080;
+}
+
+#nav {
+  width: 100%;
+  display: block;
+}
+
+#mandatory,
+#optional {
+  display: inline-block;
+}
+
+#optional {
+  margin-top: 1em;
+  float: right;
 }
 </style>
