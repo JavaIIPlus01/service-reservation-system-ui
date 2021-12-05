@@ -1,68 +1,116 @@
 <template>
   <div class="login">
     <h1>Sign In</h1>
-    <form @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label for="login">Username</label>
-        <input
-          id="login"
-          type="text"
-          v-model="login"
-          name="login"
-          class="form-control"
-        />
-      </div>
-      <div class="form-group">
-        <label for="pass">Password</label>
-        <input
-          id="pass"
-          type="password"
-          v-model="password"
-          name="password"
-          class="form-control"
-        />
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" :disabled="false">Login</button>
-        <img
-          v-show="false"
-          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-          alt="logging"
-        />
-        <router-link to="/register" class="btn btn-link">Register</router-link>
-      </div>
-    </form>
+    <VeeForm v-slot="{ handleSubmit }" :validation-schema="schema" as="div">
+      <form @submit="handleSubmit($event, handleLogin)">
+        <div class="form-group">
+          <label for="login">Username</label>
+          <Field
+            id="login"
+            type="login"
+            v-model="login"
+            name="login"
+            class="form-control"
+          />
+          <ErrorMessage name="login" class="error-feedback" />
+        </div>
+        <div class="form-group">
+          <label for="pass">Password</label>
+          <Field
+            id="pass"
+            type="password"
+            v-model="password"
+            name="password"
+            class="form-control"
+          />
+          <ErrorMessage name="password" class="error-feedback" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" :disabled="false">Login</button>
+          <span
+            v-show="submitted"
+            class="spinner-border spinner-border-sm"
+          ></span>
+          <router-link to="/register" class="btn btn-link"
+            >Register</router-link
+          >
+        </div>
+        <div class="form-group">
+          <div v-if="message" class="alert alert-danger" role="alert">
+            {{ message }}
+          </div>
+        </div>
+      </form>
+    </VeeForm>
   </div>
 </template>
 
 <script>
+import { Form as VeeForm, Field, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 import { mapState, mapActions } from "vuex";
 
 export default {
+  name: "Login",
+  components: {
+    VeeForm,
+    Field,
+    ErrorMessage,
+  },
   data() {
+    const schema = yup.object().shape({
+      login: yup.string().required("Username is required!"),
+      password: yup.string().required("Password is required!"),
+    });
     return {
+      submitted: false,
       login: "",
       password: "",
-      submitted: false,
+      message: "",
+      schema,
     };
   },
   computed: {
     ...mapState("account", ["status"]),
+    loggedIn() {
+      return this.$store.state.account.status.loggedIn;
+    },
   },
-  created () {
+  created() {
     // reset login status
-    this.logout();
+    if (this.loggedIn) {
+      this.$router.push("/");
+    } else {
+      this.logout();
+    }
   },
   methods: {
     ...mapActions("account", ["loginUser", "logout"]),
     // eslint-disable-next-line no-unused-vars
-    handleSubmit (e) {
+    handleLogin(values) {
       this.submitted = true;
       const { login, password } = this;
-      if (login && password) {
-        this.loginUser({ login, password })
-      }
-    }
-  }
+      this.loginUser({ login, password }).then(
+        () => {
+          this.$router.push("/");
+        },
+        (error) => {
+          this.submitted = false;
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+  },
 };
 </script>
+
+<style>
+.error-feedback {
+  color: red;
+}
+</style>

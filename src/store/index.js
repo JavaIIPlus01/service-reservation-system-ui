@@ -1,13 +1,15 @@
-import Vuex from "vuex";
+import { createStore } from "vuex";
 
 import { alert } from "./alert.module";
 import { account } from "./account.module";
 import { users } from "./users.module";
 
-export const store = new Vuex.Store({
+const store = createStore({
   modules: {
     alert,
     account,
-    users
-  }
+    users,
+  },
 });
+
+export default store;
