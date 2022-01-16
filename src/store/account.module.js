@@ -24,6 +24,11 @@ const actions = {
     UserService.logout();
     commit("logout");
   },
+  // eslint-disable-next-line no-unused-vars
+  update({ commit }) {
+    console.log("Profile Updated.");
+    commit("update");
+  },
   register({ commit }, user) {
     commit("registerRequest", user);
 
@@ -57,6 +62,9 @@ const mutations = {
   logout(state) {
     state.status = {};
     state.user = null;
+  },
+  update(state) {
+    state.user = user;
   },
   // eslint-disable-next-line no-unused-vars
   registerRequest(state, user) {

@@ -12,10 +12,10 @@
     </p>
   </div>
   <div class="buttons">
-    <button id="sign_in" type="button" class="but btn btn-secondary">
+    <button type="button" class="but btn btn-secondary">
       <router-link to="/now" class="text">Try NOW</router-link>
     </button>
-    <button id="sign_up" type="button" class="but btn btn-secondary">
+    <button type="button" class="but btn btn-secondary">
       <router-link to="/more" class="text">See MORE</router-link>
     </button>
   </div>

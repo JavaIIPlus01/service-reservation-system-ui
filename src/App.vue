@@ -14,6 +14,9 @@
         <li class="link nav-item">
           <router-link to="/contact" class="nav-link">Contact</router-link>
         </li>
+        <li v-if="account.status.loggedIn" class="link nav-item">
+          <router-link to="/providers" class="nav-link">Providers</router-link>
+        </li>
         <li class="link nav-item">
           <router-link to="/help" class="nav-link">Help</router-link>
         </li>
@@ -28,11 +31,11 @@
               aria-label="Search"
             />
             <a class="search-icon nav-link" @click.prevent="">
-              <font-awesome-icon icon="search" class="fas fa-search fa-2x"
+              <font-awesome-icon icon="search" class="icon fas fa-search fa-2x"
             /></a>
           </form>
         </div>
-        <div v-if="homePage() && !account.user" class="sign_but">
+        <div v-if="!account.user" class="sign_but">
           <button type="button" class="but btn btn-secondary">
             <router-link to="/login" class="text">Sign In</router-link>
           </button>
@@ -40,11 +43,28 @@
             <router-link to="/register" class="text">Sign Up</router-link>
           </button>
         </div>
-        <div v-if="homePage() && account.status.loggedIn" class="sign_but">
-          <button type="button" class="but btn btn-secondary">
-            <a class="text nav-link" @click.prevent="logOut">
-              <font-awesome-icon icon="sign-out-alt" class="text"/> LogOut</a>
+        <div v-if="account.status.loggedIn" class="sign_but dropdown">
+          <button
+            class="but btn btn-secondary"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <font-awesome-icon icon="user-alt" />
+            &nbsp;&nbsp;User Menu
           </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" @click.prevent="profile"
+              >My Profile</a
+            >
+            <a class="dropdown-item" href="#">My Reservations</a>
+            <hr />
+            <a class="dropdown-item" @click.prevent="logOut" href="#">
+              <font-awesome-icon icon="sign-out-alt" /> Exit</a
+            >
+          </div>
         </div>
       </div>
     </nav>
@@ -52,7 +72,7 @@
   <div class="jumbotron">
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 offset-sm-3">
+        <div>
           <div v-if="false" :class="`alert ${alert.type}`">ALERT!</div>
           <router-view></router-view>
         </div>
@@ -74,11 +94,18 @@ export default {
   methods: {
     ...mapActions("account", ["logout"]),
     homePage() {
-      return this.$route.path === "/" || this.$route.path === "/home";
+      return (
+        this.$route.path === "/" ||
+        this.$route.path === "/home" ||
+        this.$route.path === "/profile"
+      );
     },
     logOut() {
       this.logout();
       this.$router.push("/login");
+    },
+    profile() {
+      this.$router.push("/profile");
     },
   },
 };
@@ -88,12 +115,23 @@ export default {
 @font-face {
   font-family: roboto-regular;
   src: url("assets/VarelaRound-Regular.ttf");
+  font-size: medium;
 }
 
 button {
   margin-right: 10px;
   font-family: roboto-regular, sans-serif;
   box-shadow: 5px 5px #c0c0c0;
+  font-size: medium;
+}
+
+hr {
+  margin: auto;
+  background-color: lightgrey;
+}
+
+.btn-secondary {
+  width: 10em;
 }
 
 .but:hover {
@@ -105,6 +143,18 @@ a.nav-link {
   color: #2c3e50;
   font-weight: bold;
   font-family: roboto-regular, sans-serif;
+  font-size: medium;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0;
+}
+
+.row {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .sign_but {
@@ -113,16 +163,39 @@ a.nav-link {
 }
 
 .text {
-  color: wheat;
+  color: white !important;
 }
 
 .text:hover {
-  color: burlywood;
+  color: wheat;
   text-decoration: none;
 }
 
 .search-icon {
   padding: 0 5px;
+}
+
+.dropdown {
+  width: 200px;
+  font-family: roboto-regular, sans-serif;
+  font-size: medium;
+}
+
+.dropdown-item {
+  font-family: roboto-regular, sans-serif;
+  font-size: medium;
+  color: #566573;
+}
+
+.dropdown-item:hover {
+  background-color: gray;
+  font-weight: initial;
+  color: wheat;
+}
+
+.icon {
+  color: #566573;
+  height: 25px;
 }
 
 #search {
@@ -147,5 +220,7 @@ a.nav-link {
 #optional {
   margin-top: 1em;
   float: right;
+  font-family: roboto-regular, sans-serif;
+  font-size: medium;
 }
 </style>

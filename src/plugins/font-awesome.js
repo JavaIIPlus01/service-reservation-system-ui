@@ -2,6 +2,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faCar,
+  faCheckSquare,
   faSearch,
   faBriefcase,
   faBullhorn,
@@ -11,10 +12,13 @@ import {
   faUserPlus,
   faSignInAlt,
   faSignOutAlt,
+  faUserAlt,
+  faFileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
   faCar,
+  faCheckSquare,
   faSearch,
   faBriefcase,
   faBullhorn,
@@ -23,7 +27,9 @@ library.add(
   faUser,
   faUserPlus,
   faSignInAlt,
-  faSignOutAlt
+  faSignOutAlt,
+  faUserAlt,
+  faFileAlt
 );
 
 export { FontAwesomeIcon };
