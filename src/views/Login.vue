@@ -113,4 +113,11 @@ export default {
 .error-feedback {
   color: red;
 }
+
+.login {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  width: 40%;
+}
 </style>

@@ -36,7 +36,7 @@ export default {
 
 <style>
 .home {
-  margin: 100px auto;
+  margin: auto auto;
   border: 3px solid #2c3e50;
   min-width: 40%;
 }
@@ -45,7 +45,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
+  padding-top: 1em;
 }
 
 ul {

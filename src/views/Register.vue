@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="register">
     <h2>Register</h2>
     <VeeForm v-slot="{ handleSubmit }" :validation-schema="schema" as="div">
       <form @submit="handleSubmit($event, submitRegister)">
@@ -75,7 +75,8 @@
           </button>
           <span
             v-show="submitted"
-            class="spinner-border spinner-border-sm"></span>
+            class="spinner-border spinner-border-sm"
+          ></span>
           <router-link to="/login" class="btn btn-link">Cancel</router-link>
         </div>
       </form>
@@ -83,7 +84,8 @@
     <div
       v-if="message"
       class="alert"
-      :class="successful ? 'alert-success' : 'alert-danger'">
+      :class="successful ? 'alert-success' : 'alert-danger'"
+    >
       {{ message }}
     </div>
   </div>
@@ -148,7 +150,7 @@ export default {
         (data) => {
           setTimeout(() => {
             // display success message after route change completes
-            if(data) {
+            if (data) {
               this.message = "Registration successful";
             }
           });
@@ -174,5 +176,12 @@ export default {
 <style>
 .error-feedback {
   color: red;
+}
+
+.register {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 </style>
